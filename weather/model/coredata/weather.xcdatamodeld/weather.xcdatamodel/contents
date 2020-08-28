@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18G5033" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="WeatherPlan" representedClassName="WeatherPlan" syncable="YES" codeGenerationType="class">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="iconID" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary" storedInTruthFile="YES"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="planDate" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="planTitle" optional="YES" attributeType="String"/>
+        <attribute name="weatherDescription" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="WeatherPlan" positionX="-63" positionY="45" width="128" height="148"/>
+    </elements>
+</model>
