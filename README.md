@@ -6,6 +6,7 @@ The add plan button will stay disabled. But if there are already plans in the DB
 When internet is available, the app fetches weekly weather data from open weather api for user's location and when clicked on "Add plan" first user can see these.
 Then by clicking on one of the weather records, user can add a plan that suits to that weather record. These will be saved to core data and the table on the first screen will update.
 Editing plans is not implemented in this version.
+A plan can be deleted by swiping left the record on the table.
 
 ## Implementation
 

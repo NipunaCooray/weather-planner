@@ -18,7 +18,7 @@ class WeatherPlanListViewController: UIViewController, UITableViewDataSource, UI
     let reuseIdentifier = "weatherPlanCell"
     
     //This dataController is injected from the SceneDelegare
-     var dataController:DataController!
+    var dataController:DataController!
     var fetchedResultsController: NSFetchedResultsController<WeatherPlan>!
     
     var weatherResponse : WeatherResponse?
@@ -26,6 +26,8 @@ class WeatherPlanListViewController: UIViewController, UITableViewDataSource, UI
     var planToInject : WeatherPlan?
     
     @IBOutlet weak var addPlanButton: UIBarButtonItem!
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var lat : Double?
     var long : Double?
@@ -37,6 +39,8 @@ class WeatherPlanListViewController: UIViewController, UITableViewDataSource, UI
         // Do any additional setup after loading the view.
         
         showAlert()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
         
         //print(WeatherClient.Endpoints.searchURLString(-33.865143, 151.209900).url)
         locationManager.delegate =  self
@@ -112,6 +116,12 @@ class WeatherPlanListViewController: UIViewController, UITableViewDataSource, UI
             present(alert, animated: true, completion: nil)
         }
     }
+    
+    func deletePlan(at indexPath: IndexPath) {
+        let planToDelete = fetchedResultsController.object(at: indexPath)
+        dataController.viewContext.delete(planToDelete)
+        try? dataController.viewContext.save()
+    }
 
     
     // MARK: Table View Data Source
@@ -135,11 +145,14 @@ class WeatherPlanListViewController: UIViewController, UITableViewDataSource, UI
          self.planToInject = fetchedResultsController.object(at: indexPath)
 
          performSegue(withIdentifier: "goDirectToAddPlanVC", sender: self)
-        
-        
-//        let detailController = self.storyboard!.instantiateViewController(withIdentifier: "Weather") as! WeatherInfoViewController
-//        detailController.meme = 
-//        self.navigationController!.pushViewController(detailController, animated: true)
+
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        switch editingStyle {
+        case .delete: deletePlan(at: indexPath)
+        default: () // Unsupported
+        }
     }
     
     @IBAction func addPlan(_ sender: UIBarButtonItem) {
@@ -174,10 +187,13 @@ extension WeatherPlanListViewController : CLLocationManagerDelegate{
             self.long = location.coordinate.longitude
             
             WeatherClient.fetchSevenDayWeatherData(lat: lat!, long: long!){(weatherResponse,error) in
+                
+                
                
                 if let weatherResponse = weatherResponse{
                     self.weatherResponse = weatherResponse
                     self.addPlanButton.isEnabled = true
+                    self.activityIndicator.stopAnimating()
                 }
                 
             }

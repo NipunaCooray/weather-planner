@@ -32,6 +32,8 @@ class AddPlanViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         setupViews()
+        
+        initializeHideKeyboard()
     }
     
     func setupViews(){
@@ -72,14 +74,9 @@ class AddPlanViewController: UIViewController {
                 savePlanButton.isEnabled = false
                 
             }
-            
-            
-            
+
         }
-        
-       
-        
-        
+
     }
     
 
@@ -108,14 +105,29 @@ class AddPlanViewController: UIViewController {
             
             try? dataController.viewContext.save()
             
-            let alert = UIAlertController(title: "Alert", message: "Saved", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            let alert = UIAlertController(title: "Plan saved", message: "Your plan is successfully saved", preferredStyle: UIAlertController.Style.alert)
+            //alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default , handler: { action in
+                  switch action.style{
+                  case .default:
+ 
+                        
+                        self.navigationController?.popViewController(animated: true)
+                        self.navigationController?.popViewController(animated: true)
+                        self.dismiss(animated: true, completion: nil)
+
+                  case .cancel:
+                        print("cancel")
+
+                  case .destructive:
+                        print("destructive")
+
+
+            }}))
+            
             self.present(alert, animated: true, completion: nil)
-            
-            self.savePlanButton.isEnabled = false
-            self.planTitleTextField.isEnabled = false
-            self.noteTextField.isEditable = false
-            
+
         }
         
         
@@ -139,3 +151,18 @@ class AddPlanViewController: UIViewController {
     */
 
 }
+
+extension AddPlanViewController {
+    func initializeHideKeyboard(){
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+        target: self,
+        action: #selector(dismissMyKeyboard))
+
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissMyKeyboard(){
+        view.endEditing(true)
+    }
+}
+
